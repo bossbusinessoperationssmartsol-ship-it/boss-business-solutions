@@ -1,0 +1,8 @@
+{
+  "name": "BOSS. — Business Operations & Smart Solutions",
+  "description": "Accounting, bookkeeping, BIR tax compliance, business registration, and smart digital accounting solutions for Filipino entrepreneurs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
