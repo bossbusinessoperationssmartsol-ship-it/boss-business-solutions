@@ -10,6 +10,11 @@ export const SITE_INTEGRATIONS = {
   officialGoogleFormUrl: 'https://forms.gle/mTWXTm89pAZP2eaK9',
 
   /**
+   * Canonical live production domain (without trailing slash)
+   */
+  siteBaseUrl: 'https://boss-business-solutions.pages.dev',
+
+  /**
    * Public path to the official BOSS. Privacy Notice page
    */
   privacyNoticePath: '/privacy-notice',

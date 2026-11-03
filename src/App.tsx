@@ -70,7 +70,7 @@ export default function App() {
 
     const canonicalPath =
       route === 'privacy-notice' ? SITE_INTEGRATIONS.privacyNoticePath : '/';
-    const canonicalHref = window.location.origin + canonicalPath;
+    const canonicalHref = `${SITE_INTEGRATIONS.siteBaseUrl}${canonicalPath}`;
 
     let canonicalLink = document.querySelector<HTMLLinkElement>(
       'link[rel="canonical"]'

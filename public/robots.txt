@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# After publishing on Cloudflare Pages or your custom domain, replace YOUR-LIVE-DOMAIN below with your actual website URL:
-# Sitemap: https://your-live-domain.pages.dev/sitemap.xml
+Sitemap: https://boss-business-solutions.pages.dev/sitemap.xml
