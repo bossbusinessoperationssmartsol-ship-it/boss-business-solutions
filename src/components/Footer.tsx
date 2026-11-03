@@ -3,16 +3,17 @@ import { ArrowUpRight, Check, Copy } from 'lucide-react';
 import { BRAND_CONTACT } from '../data/bossContent';
 import { SITE_INTEGRATIONS } from '../config/siteIntegrations';
 import { BossLogo } from './BossLogo';
+import { NavPageTarget } from './Navbar';
 
 interface FooterProps {
-  onOpenOwnerSetupGuide: () => void;
   onNavigateSection: (sectionId?: string) => void;
+  onNavigatePage: (page: NavPageTarget) => void;
   onOpenPrivacyNotice: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  onOpenOwnerSetupGuide,
   onNavigateSection,
+  onNavigatePage,
   onOpenPrivacyNotice,
 }) => {
   const [fbCopied, setFbCopied] = useState(false);
@@ -27,30 +28,31 @@ export const Footer: React.FC<FooterProps> = ({
     }
   };
 
+  const isPlainClick = (e: React.MouseEvent<HTMLAnchorElement>) =>
+    !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && e.button === 0;
+
   const handleSectionClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     sectionId?: string
   ) => {
-    if (
-      !e.metaKey &&
-      !e.ctrlKey &&
-      !e.shiftKey &&
-      !e.altKey &&
-      e.button === 0
-    ) {
+    if (isPlainClick(e)) {
       e.preventDefault();
       onNavigateSection(sectionId);
     }
   };
 
+  const handlePageClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    page: NavPageTarget
+  ) => {
+    if (isPlainClick(e)) {
+      e.preventDefault();
+      onNavigatePage(page);
+    }
+  };
+
   const handlePrivacyClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (
-      !e.metaKey &&
-      !e.ctrlKey &&
-      !e.shiftKey &&
-      !e.altKey &&
-      e.button === 0
-    ) {
+    if (isPlainClick(e)) {
       e.preventDefault();
       onOpenPrivacyNotice();
     }
@@ -61,7 +63,7 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
           {/* Official Brand Lockup Column */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-4">
             <div className="flex items-center gap-4 mb-4">
               <BossLogo size="lg" />
               <div>
@@ -82,9 +84,10 @@ export const Footer: React.FC<FooterProps> = ({
               {BRAND_CONTACT.tagline}
             </p>
             <p className="text-xs sm:text-sm text-[#F7F8F5]/65 leading-relaxed max-w-md mb-5">
-              Philippine business registration support, BIR tax compliance,
-              organized bookkeeping, financial reporting, and smart digital
-              accounting solutions.
+              Philippine business registration support, BIR &amp; corporate
+              compliance, organized bookkeeping, reconciliations, payroll
+              administration, financial reporting, and smart digital accounting
+              solutions.
             </p>
 
             <a
@@ -98,55 +101,46 @@ export const Footer: React.FC<FooterProps> = ({
             </a>
           </div>
 
-          {/* Navigation Mirror */}
+          {/* Practice & Knowledge Hub Links */}
           <div className="lg:col-span-3">
             <h3 className="text-xs font-semibold text-[#D6B36A] mb-4">
-              Navigation
+              Practice &amp; Resources
             </h3>
             <ul className="space-y-2.5 text-sm text-[#F7F8F5]/75">
               <li>
                 <a
-                  href="/#sounds-familiar"
-                  onClick={(e) => handleSectionClick(e, 'sounds-familiar')}
+                  href={SITE_INTEGRATIONS.servicesPath}
+                  onClick={(e) => handlePageClick(e, 'services')}
                   className="hover:text-white transition-colors"
                 >
-                  Sounds Familiar?
+                  All 24 Practice Services
                 </a>
               </li>
               <li>
                 <a
-                  href="/#services"
-                  onClick={(e) => handleSectionClick(e, 'services')}
+                  href={SITE_INTEGRATIONS.insightsPath}
+                  onClick={(e) => handlePageClick(e, 'insights')}
                   className="hover:text-white transition-colors"
                 >
-                  Solutions
+                  BOSS. Insights
                 </a>
               </li>
               <li>
                 <a
-                  href="/#journey"
-                  onClick={(e) => handleSectionClick(e, 'journey')}
+                  href={SITE_INTEGRATIONS.taxResourcesPath}
+                  onClick={(e) => handlePageClick(e, 'tax-resources')}
                   className="hover:text-white transition-colors"
                 >
-                  Your Business Journey
+                  Tax Forms &amp; BIR Guide
                 </a>
               </li>
               <li>
                 <a
-                  href="/#quiz"
-                  onClick={(e) => handleSectionClick(e, 'quiz')}
+                  href={SITE_INTEGRATIONS.regulatoryUpdatesPath}
+                  onClick={(e) => handlePageClick(e, 'regulatory-updates')}
                   className="hover:text-white transition-colors"
                 >
-                  What Does Your Business Need?
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#about"
-                  onClick={(e) => handleSectionClick(e, 'about')}
-                  className="hover:text-white transition-colors"
-                >
-                  About BOSS.
+                  Regulatory &amp; Compliance Updates
                 </a>
               </li>
               <li>
@@ -155,7 +149,52 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={(e) => handleSectionClick(e, 'knowledge-hub')}
                   className="hover:text-white transition-colors"
                 >
-                  Business Smarts Hub
+                  Business Smarts Guides
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Standardized Navigation Mirror */}
+          <div className="lg:col-span-2">
+            <h3 className="text-xs font-semibold text-[#D6B36A] mb-4">
+              Explore BOSS.
+            </h3>
+            <ul className="space-y-2.5 text-sm text-[#F7F8F5]/75">
+              <li>
+                <a
+                  href="/"
+                  onClick={(e) => handleSectionClick(e)}
+                  className="hover:text-white transition-colors"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE_INTEGRATIONS.aboutPath}
+                  onClick={(e) => handlePageClick(e, 'about')}
+                  className="hover:text-white transition-colors"
+                >
+                  About BOSS.
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#journey"
+                  onClick={(e) => handleSectionClick(e, 'journey')}
+                  className="hover:text-white transition-colors"
+                >
+                  Business Journey
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#quiz"
+                  onClick={(e) => handleSectionClick(e, 'quiz')}
+                  className="hover:text-white transition-colors"
+                >
+                  Find Your Fit
                 </a>
               </li>
               <li>
@@ -169,18 +208,16 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <a
-                  href={SITE_INTEGRATIONS.officialGoogleFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 hover:text-white transition-colors"
+                  href="/#contact"
+                  onClick={(e) => handleSectionClick(e, 'contact')}
+                  className="hover:text-white transition-colors"
                 >
-                  <span>Contact Us</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  Contact
                 </a>
               </li>
               <li>
                 <a
-                  href={SITE_INTEGRATIONS.privacyNoticePath}
+                  href={SITE_INTEGRATIONS.privacyNoticeUrl}
                   onClick={handlePrivacyClick}
                   className="text-[#D6B36A] hover:text-white font-medium transition-colors"
                 >
@@ -191,7 +228,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           {/* Official Contact Channels */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             <h3 className="text-xs font-semibold text-[#D6B36A] mb-4">
               Official Contact Channels
             </h3>
@@ -271,20 +308,22 @@ export const Footer: React.FC<FooterProps> = ({
 
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href={SITE_INTEGRATIONS.privacyNoticePath}
+              href={SITE_INTEGRATIONS.privacyNoticeUrl}
               onClick={handlePrivacyClick}
               className="text-[#F7F8F5]/85 hover:text-white underline underline-offset-4 transition-colors"
             >
               Privacy Notice
             </a>
             <span aria-hidden="true">·</span>
-            <button
-              type="button"
-              onClick={onOpenOwnerSetupGuide}
-              className="hover:text-[#D6B36A] underline underline-offset-4 transition-colors cursor-pointer"
+            <a
+              href={SITE_INTEGRATIONS.officialGoogleFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#D6B36A] hover:text-white transition-colors"
             >
-              Owner Setup &amp; Hosting Guide
-            </button>
+              <span>Client Inquiry Form</span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            </a>
           </div>
         </div>
       </div>

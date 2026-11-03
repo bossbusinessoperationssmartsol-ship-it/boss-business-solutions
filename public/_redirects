@@ -1,2 +1,4 @@
-/privacy-notice /privacy-notice/index.html 200
-/* /index.html 200
+/privacy /privacy-notice 301
+/privacy-policy /privacy-notice 301
+/bir-forms /tax-resources 301
+/updates /regulatory-updates 301

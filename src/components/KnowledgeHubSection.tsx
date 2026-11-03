@@ -7,10 +7,16 @@ import flatlayImg from '../assets/images/financial_clarity_flatlay_1793711729238
 
 interface KnowledgeHubSectionProps {
   onExploreRelatedService: (serviceId: string) => void;
+  onOpenInsights?: () => void;
+  onOpenTaxResources?: () => void;
+  onOpenRegulatoryUpdates?: () => void;
 }
 
 export const KnowledgeHubSection: React.FC<KnowledgeHubSectionProps> = ({
   onExploreRelatedService,
+  onOpenInsights,
+  onOpenTaxResources,
+  onOpenRegulatoryUpdates,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeArticle, setActiveArticle] = useState<KnowledgeArticle | null>(
@@ -187,6 +193,134 @@ export const KnowledgeHubSection: React.FC<KnowledgeHubSectionProps> = ({
               </div>
             </motion.article>
           ))}
+        </div>
+
+        {/* Expanded BOSS. Knowledge & Regulatory Platform Gateway */}
+        <div className="mt-10 rounded-2xl bg-[#142B3B] text-[#F7F8F5] p-6 sm:p-8 border border-[#D6B36A]/30">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-6 border-b border-white/12 mb-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#D6B36A] mb-1.5">
+                Expanded Advisory &amp; Compliance Library
+              </p>
+              <h3 className="font-display text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+                Explore BOSS. Insights, BIR Tax Forms &amp; Regulatory Updates.
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-[#F7F8F5]/75 max-w-md">
+              Go deeper with regulatory briefings across 8 topics, our
+              11-section Philippine BIR Form Reference Center, and curated
+              compliance updates.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a
+              href="/insights"
+              onClick={(e) => {
+                if (
+                  onOpenInsights &&
+                  !e.metaKey &&
+                  !e.ctrlKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  onOpenInsights();
+                }
+              }}
+              className="group rounded-xl bg-[#0D2130]/90 hover:bg-[#0D2130] border border-white/12 hover:border-[#D6B36A]/60 p-5 flex flex-col justify-between transition-colors"
+            >
+              <div>
+                <p className="text-xs font-semibold text-[#D6B36A] mb-1">
+                  01 · Editorial Hub
+                </p>
+                <h4 className="font-display text-lg font-semibold text-white mb-2">
+                  BOSS. Insights
+                </h4>
+                <p className="text-xs text-[#F7F8F5]/75 leading-relaxed mb-4">
+                  In-depth briefings on the EOPT Act, Invoice rules, Form 2550Q,
+                  EWT/Form 2307, payroll, OPC vs. sole prop, and business
+                  closure.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D6B36A] group-hover:text-white">
+                <span>Browse All Insights</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
+            </a>
+
+            <a
+              href="/tax-resources"
+              onClick={(e) => {
+                if (
+                  onOpenTaxResources &&
+                  !e.metaKey &&
+                  !e.ctrlKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  onOpenTaxResources();
+                }
+              }}
+              className="group rounded-xl bg-[#0D2130]/90 hover:bg-[#0D2130] border border-white/12 hover:border-[#D6B36A]/60 p-5 flex flex-col justify-between transition-colors"
+            >
+              <div>
+                <p className="text-xs font-semibold text-[#D6B36A] mb-1">
+                  02 · 11-Section BIR Guide
+                </p>
+                <h4 className="font-display text-lg font-semibold text-white mb-2">
+                  Tax Resource Center
+                </h4>
+                <p className="text-xs text-[#F7F8F5]/75 leading-relaxed mb-4">
+                  Searchable Philippine BIR forms library—including reform flags
+                  for discontinued Monthly VAT 2550M and repealed Form 0605 ARF.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D6B36A] group-hover:text-white">
+                <span>Search BIR Forms</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
+            </a>
+
+            <a
+              href="/regulatory-updates"
+              onClick={(e) => {
+                if (
+                  onOpenRegulatoryUpdates &&
+                  !e.metaKey &&
+                  !e.ctrlKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  onOpenRegulatoryUpdates();
+                }
+              }}
+              className="group rounded-xl bg-[#0D2130]/90 hover:bg-[#0D2130] border border-white/12 hover:border-[#D6B36A]/60 p-5 flex flex-col justify-between transition-colors"
+            >
+              <div>
+                <p className="text-xs font-semibold text-[#D6B36A] mb-1">
+                  03 · 15-Agency Directory
+                </p>
+                <h4 className="font-display text-lg font-semibold text-white mb-2">
+                  Regulatory Updates
+                </h4>
+                <p className="text-xs text-[#F7F8F5]/75 leading-relaxed mb-4">
+                  Plain-English summaries of BIR, SEC, SSS, PhilHealth,
+                  Pag-IBIG, DOLE, DTI, LGU, CDA, PEZA, BOI, and NPC compliance
+                  issuances.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D6B36A] group-hover:text-white">
+                <span>Explore Compliance Updates</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
+            </a>
+          </div>
         </div>
 
         <p className="mt-8 text-xs text-[#142B3B]/60 leading-relaxed max-w-3xl">

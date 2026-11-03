@@ -1,17 +1,12 @@
 import React from 'react';
 import {
-  ArrowLeft,
   ArrowUpRight,
   Check,
   Copy,
-  FileText,
   Mail,
   ShieldCheck,
 } from 'lucide-react';
-import {
-  OWNER_VERIFICATION_CHECKLIST,
-  PRIVACY_NOTICE_SECTIONS,
-} from '../data/privacyNoticeContent';
+import { PRIVACY_NOTICE_SECTIONS } from '../data/privacyNoticeContent';
 import { SITE_INTEGRATIONS } from '../config/siteIntegrations';
 import { BRAND_CONTACT } from '../data/bossContent';
 
@@ -41,27 +36,33 @@ export const PrivacyNoticePage: React.FC<PrivacyNoticePageProps> = ({
       {/* Corporate Institutional Header */}
       <section className="bg-[#0D2130] text-[#F7F8F5] border-b border-[#D6B36A]/30 pt-10 pb-14 sm:pt-14 sm:pb-20 tracking-[0.01em]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
-          {/* Breadcrumb & Return Control */}
+          {/* Standardized Breadcrumb & Statutory Reference */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <a
-              href="/"
-              onClick={(e) => {
-                if (
-                  !e.metaKey &&
-                  !e.ctrlKey &&
-                  !e.shiftKey &&
-                  !e.altKey &&
-                  e.button === 0
-                ) {
-                  e.preventDefault();
-                  onNavigateHome();
-                }
-              }}
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-[#D6B36A] hover:text-white transition-colors duration-150 whitespace-nowrap shrink-0"
+            <nav
+              aria-label="Breadcrumb"
+              className="flex flex-wrap items-center gap-2 text-xs text-[#F7F8F5]/65"
             >
-              <ArrowLeft className="w-4 h-4 shrink-0" />
-              <span>Back to BOSS. Main Website</span>
-            </a>
+              <a
+                href="/"
+                onClick={(e) => {
+                  if (
+                    !e.metaKey &&
+                    !e.ctrlKey &&
+                    !e.shiftKey &&
+                    !e.altKey &&
+                    e.button === 0
+                  ) {
+                    e.preventDefault();
+                    onNavigateHome();
+                  }
+                }}
+                className="hover:text-[#D6B36A] transition-colors"
+              >
+                Home
+              </a>
+              <span aria-hidden="true">/</span>
+              <span className="text-[#D6B36A] font-medium">Privacy Notice</span>
+            </nav>
 
             <div className="flex items-center gap-2 text-xs text-[#F7F8F5]/65">
               <span>Legal &amp; Data Privacy Governance</span>
@@ -114,16 +115,15 @@ export const PrivacyNoticePage: React.FC<PrivacyNoticePageProps> = ({
               </div>
 
               <div>
-                <dt className="text-[#F7F8F5]/55 mb-1">Effective Date</dt>
+                <dt className="text-[#F7F8F5]/55 mb-1">Notice Status</dt>
                 <dd className="text-[#F7F8F5]/90">
                   {SITE_INTEGRATIONS.privacyEffectiveDate ? (
                     <span className="font-semibold text-white">
-                      {SITE_INTEGRATIONS.privacyEffectiveDate}
+                      Effective {SITE_INTEGRATIONS.privacyEffectiveDate}
                     </span>
                   ) : (
-                    <span className="text-[#F7F8F5]/75">
-                      To be displayed upon owner confirmation prior to final
-                      publication
+                    <span className="font-semibold text-white">
+                      Active — Current Published Version
                     </span>
                   )}
                 </dd>
@@ -399,16 +399,15 @@ export const PrivacyNoticePage: React.FC<PrivacyNoticePageProps> = ({
                         )}
 
                         {/* Effective Date Status inside Section 12 */}
-                        {section.number === '12' && (
-                          <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#142B3B]/10 text-xs sm:text-sm text-[#142B3B]/80">
-                            <strong className="font-semibold text-[#142B3B]">
-                              Effective Date Status:
-                            </strong>{' '}
-                            {SITE_INTEGRATIONS.privacyEffectiveDate
-                              ? `Confirmed Effective Date: ${SITE_INTEGRATIONS.privacyEffectiveDate}.`
-                              : 'Pending confirmation by the website owner prior to final public launch (intentionally left unpopulated until confirmed so no unverified date is stated as fact).'}
-                          </div>
-                        )}
+                        {section.number === '12' &&
+                          SITE_INTEGRATIONS.privacyEffectiveDate && (
+                            <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#142B3B]/10 text-xs sm:text-sm text-[#142B3B]/80">
+                              <strong className="font-semibold text-[#142B3B]">
+                                Effective Date:
+                              </strong>{' '}
+                              {SITE_INTEGRATIONS.privacyEffectiveDate}
+                            </div>
+                          )}
 
                         {section.calloutNote && (
                           <div className="mt-4 p-4 rounded-xl bg-[#F7F8F5] border border-[#142B3B]/10 text-xs sm:text-sm text-[#142B3B]/80 leading-relaxed">
@@ -419,50 +418,6 @@ export const PrivacyNoticePage: React.FC<PrivacyNoticePageProps> = ({
                     </article>
                   ))}
                 </div>
-              </div>
-
-              {/* Transparent Owner Pre-Launch Verification Summary */}
-              <div className="rounded-2xl bg-white border border-[#D6B36A]/55 p-6 sm:p-8">
-                <div className="flex items-start gap-3 mb-4">
-                  <FileText className="w-5 h-5 text-[#8A6824] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-semibold text-[#8A6824] mb-1">
-                      Transparency &amp; Pre-Launch Governance Note
-                    </p>
-                    <h3 className="font-display text-lg sm:text-xl font-semibold text-[#142B3B]">
-                      Items Requiring Website Owner Verification Before Final
-                      Public Launch
-                    </h3>
-                  </div>
-                </div>
-
-                <p className="text-xs sm:text-sm text-[#142B3B]/75 leading-relaxed mb-5 max-w-prose">
-                  In strict adherence to accuracy standards, this Privacy Notice
-                  does not invent business registration numbers, unverified
-                  security certifications, a designated Data Protection Officer,
-                  or a fixed numerical retention period. Before final public
-                  release, the website owner should review and confirm the
-                  following operational details:
-                </p>
-
-                <ul className="space-y-3 text-xs sm:text-sm text-[#142B3B]/85">
-                  {OWNER_VERIFICATION_CHECKLIST.map((row, idx) => (
-                    <li
-                      key={row.item}
-                      className="pb-3 border-b border-[#142B3B]/8 last:border-b-0 last:pb-0 flex items-start gap-3"
-                    >
-                      <span className="font-mono tabular-nums text-xs font-semibold text-[#8A6824] pt-0.5 shrink-0">
-                        0{idx + 1}.
-                      </span>
-                      <div>
-                        <strong className="font-semibold text-[#142B3B]">
-                          {row.item}:
-                        </strong>{' '}
-                        <span>{row.explanation}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
               {/* Bottom Return & Inquiry Action Bar */}

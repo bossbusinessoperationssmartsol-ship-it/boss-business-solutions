@@ -17,6 +17,7 @@ import { SITE_INTEGRATIONS } from '../config/siteIntegrations';
 
 interface ServicesSectionProps {
   highlightedServiceId: string | null;
+  onOpenFullDirectory: (serviceIdOrSlug?: string) => void;
 }
 
 const STAGE_FILTERS: { id: ServiceStage; label: string }[] = [
@@ -46,6 +47,7 @@ const renderServiceIcon = (iconName: ServiceItem['iconName']) => {
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({
   highlightedServiceId,
+  onOpenFullDirectory,
 }) => {
   const [stageFilter, setStageFilter] = useState<ServiceStage>('all');
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(
@@ -208,6 +210,45 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           })}
         </div>
 
+        {/* Full 24-Service Practice Directory Gateway */}
+        <div className="mt-10 rounded-2xl bg-[#0D2130] text-[#F7F8F5] border border-[#D6B36A]/30 p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#D6B36A] mb-1.5">
+              Expanded Practice Directory · 24 Specialized Services Across 6 Practice Areas
+            </p>
+            <h3 className="font-display text-xl sm:text-2xl font-semibold text-white tracking-tight mb-2">
+              Need Specific Support—Like Backlog Cleanup, Reconciliations,
+              Payroll, EWT/SAWT, or Business Closure?
+            </h3>
+            <p className="text-xs sm:text-sm text-[#F7F8F5]/75 leading-relaxed">
+              Explore all 24 Philippine accounting, corporate registration,
+              reconciliation, statutory payroll, BIR tax compliance, financial
+              reporting, and advisory services in our complete practice
+              directory.
+            </p>
+          </div>
+
+          <a
+            href="/services"
+            onClick={(e) => {
+              if (
+                !e.metaKey &&
+                !e.ctrlKey &&
+                !e.shiftKey &&
+                !e.altKey &&
+                e.button === 0
+              ) {
+                e.preventDefault();
+                onOpenFullDirectory();
+              }
+            }}
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] text-xs sm:text-sm font-semibold text-[#0D2130] bg-[#D6B36A] hover:bg-[#e1c27d] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0"
+          >
+            <span>Explore All 24 Practice Services</span>
+            <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+          </a>
+        </div>
+
         <p className="mt-8 text-xs text-[#142B3B]/60 leading-relaxed max-w-3xl">
           Professional scope note: BOSS. delivers accounting, bookkeeping, tax
           filing assistance, business registration support, management
@@ -302,24 +343,39 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               </div>
             </div>
 
-            <div className="mt-7 pt-5 border-t border-[#142B3B]/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3">
+            <div className="mt-7 pt-5 border-t border-[#142B3B]/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={() => setSelectedService(null)}
-                className="px-4 py-2.5 min-h-[42px] text-sm font-medium text-[#142B3B] bg-white border border-[#142B3B]/20 rounded-lg hover:bg-[#EFEFE9] transition-colors cursor-pointer"
+                onClick={() => {
+                  const idToOpen = selectedService.id;
+                  setSelectedService(null);
+                  onOpenFullDirectory(idToOpen);
+                }}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 min-h-[42px] text-xs sm:text-sm font-semibold text-[#087F72] hover:text-[#142B3B] transition-colors cursor-pointer whitespace-nowrap"
               >
-                Close
+                <span>Open in 24-Service Practice Directory</span>
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
-              <a
-                href={SITE_INTEGRATIONS.officialGoogleFormUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setSelectedService(null)}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[42px] text-sm font-semibold text-white bg-[#087F72] hover:bg-[#06675C] rounded-lg transition-colors whitespace-nowrap"
-              >
-                <span>Request a Quotation</span>
-                <ArrowUpRight className="w-4 h-4 shrink-0" aria-hidden="true" />
-              </a>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedService(null)}
+                  className="px-4 py-2.5 min-h-[42px] text-sm font-medium text-[#142B3B] bg-white border border-[#142B3B]/20 rounded-lg hover:bg-[#EFEFE9] transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+                <a
+                  href={SITE_INTEGRATIONS.officialGoogleFormUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setSelectedService(null)}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[42px] text-sm font-semibold text-white bg-[#087F72] hover:bg-[#06675C] rounded-lg transition-colors whitespace-nowrap"
+                >
+                  <span>Request a Quotation</span>
+                  <ArrowUpRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -17,6 +17,8 @@ type TopicKey =
   | 'registration'
   | 'bir_tax'
   | 'bookkeeping'
+  | 'payroll_statutory'
+  | 'closure_updates'
   | 'reporting'
   | 'digital_systems'
   | 'consultation'
@@ -39,11 +41,12 @@ interface ChatEntry {
 
 const TOPIC_BUTTONS: { key: TopicKey; label: string }[] = [
   { key: 'registration', label: 'Business Registration' },
-  { key: 'bir_tax', label: 'BIR Tax Compliance' },
-  { key: 'bookkeeping', label: 'Bookkeeping & Accounting' },
+  { key: 'bir_tax', label: 'BIR Tax & Forms' },
+  { key: 'bookkeeping', label: 'Bookkeeping & Cleanup' },
+  { key: 'payroll_statutory', label: 'Payroll & SSS/PHIC/HDMF' },
+  { key: 'closure_updates', label: 'Amendments & Closure' },
   { key: 'reporting', label: 'Financial Reporting' },
-  { key: 'digital_systems', label: 'Digital Accounting Solutions' },
-  { key: 'consultation', label: 'Business Consultation' },
+  { key: 'digital_systems', label: 'Accounting Systems' },
   { key: 'talk_to_boss', label: 'Talk to BOSS.' },
 ];
 
@@ -64,7 +67,19 @@ const TOPIC_REPLIES: Record<TopicKey, AssistantReply> = {
   },
   bookkeeping: {
     title: 'Bookkeeping & Accounting',
-    body: 'Malakas ang benta pero parang mahirap makita kung saan napupunta ang pera? Consistent bookkeeping records your sales and expenses systematically and reconciles your bank and e-wallet accounts—so you always have a reliable picture of your finances.',
+    body: 'Malakas ang benta pero mahirap makita kung saan napupunta ang pera? Consistent monthly bookkeeping, backlog cleanup, bank/e-wallet reconciliations, and AR/AP tracking give you a reliable picture of your finances.',
+    showInquiryLink: true,
+  },
+  payroll_statutory: {
+    title: 'Payroll & Statutory Remittances',
+    body: 'We assist employers with confidential semi-monthly or monthly payroll computation, SSS, PhilHealth, and Pag-IBIG contribution schedules, monthly BIR Form 1601-C returns, and year-end Form 1604-C / Form 2316 annualization.',
+    disclaimer:
+      'Employer contribution rates follow current official SSS, PhilHealth, and Pag-IBIG circulars.',
+    showInquiryLink: true,
+  },
+  closure_updates: {
+    title: 'Registration Amendments & Business Closure',
+    body: 'Stopping operations does not automatically stop BIR or LGU obligations. Whether you need to amend your registered address/tax types (Form 1905) or formally retire and close an inactive business with the LGU and BIR, BOSS. helps organize your clearance checklist and open-case review.',
     showInquiryLink: true,
   },
   reporting: {
@@ -97,9 +112,33 @@ const WELCOME_MESSAGE =
 function matchKeywordToTopic(input: string): TopicKey | null {
   const q = input.toLowerCase();
   if (
+    q.includes('close') ||
+    q.includes('closure') ||
+    q.includes('retire') ||
+    q.includes('cancel') ||
+    q.includes('amend') ||
+    q.includes('1905')
+  ) {
+    return 'closure_updates';
+  }
+  if (
+    q.includes('payroll') ||
+    q.includes('salary') ||
+    q.includes('sss') ||
+    q.includes('philhealth') ||
+    q.includes('pag-ibig') ||
+    q.includes('pagibig') ||
+    q.includes('hdmf') ||
+    q.includes('1601-c') ||
+    q.includes('2316')
+  ) {
+    return 'payroll_statutory';
+  }
+  if (
     q.includes('register') ||
     q.includes('dti') ||
     q.includes('sec') ||
+    q.includes('opc') ||
     q.includes('permit') ||
     q.includes('mayor') ||
     q.includes('start')
@@ -109,6 +148,14 @@ function matchKeywordToTopic(input: string): TopicKey | null {
   if (
     q.includes('bir') ||
     q.includes('tax') ||
+    q.includes('vat') ||
+    q.includes('ewt') ||
+    q.includes('eopt') ||
+    q.includes('2550') ||
+    q.includes('0605') ||
+    q.includes('2307') ||
+    q.includes('sawt') ||
+    q.includes('alphalist') ||
     q.includes('cor') ||
     q.includes('filing') ||
     q.includes('return') ||
@@ -118,6 +165,8 @@ function matchKeywordToTopic(input: string): TopicKey | null {
   }
   if (
     q.includes('bookkeep') ||
+    q.includes('backlog') ||
+    q.includes('cleanup') ||
     q.includes('ledger') ||
     q.includes('reconcil') ||
     q.includes('resibo') ||
@@ -405,7 +454,7 @@ export const BossSmartAssistant: React.FC<BossSmartAssistantProps> = ({
             <div className="px-3 pb-2.5 flex items-center justify-between text-[11px] text-[#142B3B]/60">
               <span>Browser-local FAQ guide</span>
               <a
-                href={SITE_INTEGRATIONS.privacyNoticePath}
+                href={SITE_INTEGRATIONS.privacyNoticeUrl}
                 onClick={(e) => {
                   if (
                     !e.metaKey &&

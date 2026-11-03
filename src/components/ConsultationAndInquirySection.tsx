@@ -36,10 +36,11 @@ export const ConsultationAndInquirySection: React.FC<
 
   return (
     <section
-      id="consultation"
+      id="contact"
       aria-labelledby="lets-talk-about-business-heading"
-      className="py-20 sm:py-28 bg-[#F7F8F5]"
+      className="scroll-mt-20 py-20 sm:py-28 bg-[#F7F8F5]"
     >
+      <div id="consultation" className="scroll-mt-24" aria-hidden="true" />
       <div className="max-w-5xl mx-auto px-5 sm:px-8">
         {/* Compact, Elegant Consultation Call-to-Action Card */}
         <div className="rounded-2xl bg-[#142B3B] text-[#F7F8F5] border border-[#D6B36A]/30 px-7 py-10 sm:px-12 sm:py-14 shadow-xl tracking-[0.01em]">
@@ -82,7 +83,7 @@ export const ConsultationAndInquirySection: React.FC<
               Submission of an inquiry does not constitute a confirmed
               consultation or professional engagement.{' '}
               <a
-                href={SITE_INTEGRATIONS.privacyNoticePath}
+                href={SITE_INTEGRATIONS.privacyNoticeUrl}
                 onClick={handlePrivacyLinkClick}
                 className="font-medium text-[#D6B36A] hover:text-white underline underline-offset-4 transition-colors whitespace-nowrap"
               >

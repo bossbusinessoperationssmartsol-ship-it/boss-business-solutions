@@ -256,7 +256,7 @@ export const PRIVACY_NOTICE_SECTIONS: PrivacyNoticeSection[] = [
       },
     ],
     calloutNote:
-      'Retention Schedule Note: BOSS. does not publish an arbitrary fixed retention period where one has not yet been formally adopted. Prior to or upon final publication, BOSS. establishes its internal periodic review and deletion schedule for unconverted prospective client inquiries.',
+      'Retention Governance Note: BOSS. conducts periodic internal reviews of unconverted prospective client inquiries across Google Forms, Google Sheets, and email correspondence so records no longer necessary for pre-engagement evaluation or lawful compliance purposes are appropriately removed.',
   },
   {
     id: 'section-09',

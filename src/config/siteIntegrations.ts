@@ -15,9 +15,21 @@ export const SITE_INTEGRATIONS = {
   siteBaseUrl: 'https://boss-business-solutions.pages.dev',
 
   /**
-   * Public path to the official BOSS. Privacy Notice page
+   * Public paths and full canonical URLs to official BOSS. platform routes
    */
+  servicesPath: '/services',
+  servicesUrl: 'https://boss-business-solutions.pages.dev/services',
+  insightsPath: '/insights',
+  insightsUrl: 'https://boss-business-solutions.pages.dev/insights',
+  taxResourcesPath: '/tax-resources',
+  taxResourcesUrl: 'https://boss-business-solutions.pages.dev/tax-resources',
+  regulatoryUpdatesPath: '/regulatory-updates',
+  regulatoryUpdatesUrl:
+    'https://boss-business-solutions.pages.dev/regulatory-updates',
+  aboutPath: '/about',
+  aboutUrl: 'https://boss-business-solutions.pages.dev/about',
   privacyNoticePath: '/privacy-notice',
+  privacyNoticeUrl: 'https://boss-business-solutions.pages.dev/privacy-notice',
 
   /**
    * Confirmed Privacy Notice Effective Date.

@@ -3,47 +3,108 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { BossLogo } from './BossLogo';
 import { SITE_INTEGRATIONS } from '../config/siteIntegrations';
 
+export type NavPageTarget =
+  | 'services'
+  | 'insights'
+  | 'tax-resources'
+  | 'regulatory-updates'
+  | 'about'
+  | 'privacy-notice';
+
+export type NavDestination =
+  | { type: 'section'; sectionId?: string }
+  | { type: 'page'; page: NavPageTarget };
+
 interface NavbarProps {
+  activePage: string;
   onNavigateSection: (sectionId?: string) => void;
+  onNavigatePage: (page: NavPageTarget) => void;
 }
 
-const NAV_LINKS = [
-  { label: 'Solutions', sectionId: 'services' },
-  { label: 'Journey', sectionId: 'journey' },
-  { label: 'Find Your Fit', sectionId: 'quiz' },
-  { label: 'About', sectionId: 'about' },
-  { label: 'Knowledge Hub', sectionId: 'knowledge-hub' },
+const PRIMARY_NAV_ITEMS: {
+  label: string;
+  href: string;
+  matchPages?: string[];
+  dest: NavDestination;
+}[] = [
+  {
+    label: 'Home',
+    href: '/',
+    matchPages: ['home'],
+    dest: { type: 'section' },
+  },
+  {
+    label: 'Services',
+    href: '/services',
+    matchPages: ['services'],
+    dest: { type: 'page', page: 'services' },
+  },
+  {
+    label: 'Insights',
+    href: '/insights',
+    matchPages: ['insights', 'insight-article'],
+    dest: { type: 'page', page: 'insights' },
+  },
+  {
+    label: 'Tax Forms',
+    href: '/tax-resources',
+    matchPages: ['tax-resources'],
+    dest: { type: 'page', page: 'tax-resources' },
+  },
+  {
+    label: 'Updates',
+    href: '/regulatory-updates',
+    matchPages: ['regulatory-updates', 'regulation-detail'],
+    dest: { type: 'page', page: 'regulatory-updates' },
+  },
+  {
+    label: 'About',
+    href: '/about',
+    matchPages: ['about'],
+    dest: { type: 'page', page: 'about' },
+  },
+  {
+    label: 'Contact',
+    href: '/#contact',
+    dest: { type: 'section', sectionId: 'contact' },
+  },
 ];
 
-export const Navbar: React.FC<NavbarProps> = ({ onNavigateSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  activePage,
+  onNavigateSection,
+  onNavigatePage,
+}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const closeMobile = () => setMobileOpen(false);
 
-  const handleLinkClick = (
+  const isPlainClick = (e: React.MouseEvent<HTMLAnchorElement>) =>
+    !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && e.button === 0;
+
+  const handleDestClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    sectionId?: string
+    dest: NavDestination
   ) => {
-    if (
-      !e.metaKey &&
-      !e.ctrlKey &&
-      !e.shiftKey &&
-      !e.altKey &&
-      e.button === 0
-    ) {
+    if (isPlainClick(e)) {
       e.preventDefault();
       closeMobile();
-      onNavigateSection(sectionId);
+      if (dest.type === 'page') {
+        onNavigatePage(dest.page);
+      } else {
+        onNavigateSection(dest.sectionId);
+      }
     }
   };
 
   return (
     <header className="sticky top-0 z-40 bg-[#0D2130]/95 backdrop-blur-md border-b border-[#D6B36A]/20">
-      <div className="max-w-7xl mx-auto h-16 px-5 sm:px-8 flex items-center justify-between gap-8">
-        {/* Zone 1: Official Logo + Single Brand Wordmark */}
+      <div className="max-w-7xl mx-auto h-16 px-5 sm:px-8 flex items-center justify-between gap-4 lg:gap-6">
+        {/* Zone 1: Official BOSS. Logo + Wordmark (Always returns to Home /) */}
         <a
           href="/"
-          onClick={(e) => handleLinkClick(e)}
+          onClick={(e) => handleDestClick(e, { type: 'section' })}
+          aria-label="BOSS. Home"
           className="flex items-center gap-3 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B36A]"
         >
           <BossLogo size="sm" />
@@ -52,24 +113,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateSection }) => {
           </span>
         </a>
 
-        {/* Zone 2: 5 Concise Single-Line Navigation Links */}
+        {/* Zone 2: Standardized Single-Line Navigation Across All Pages */}
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex items-center gap-7 text-sm font-medium text-[#F7F8F5]/80"
+          className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium text-[#F7F8F5]/80"
         >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.sectionId}
-              href={`/#${link.sectionId}`}
-              onClick={(e) => handleLinkClick(e, link.sectionId)}
-              className="hover:text-white hover:underline underline-offset-8 decoration-[#D6B36A] decoration-2 transition-colors duration-150 whitespace-nowrap shrink-0 py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B36A]"
-            >
-              {link.label}
-            </a>
-          ))}
+          {PRIMARY_NAV_ITEMS.map((item) => {
+            const isActive = Boolean(item.matchPages?.includes(activePage));
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={(e) => handleDestClick(e, item.dest)}
+                aria-current={isActive ? 'page' : undefined}
+                className={`transition-colors duration-150 whitespace-nowrap shrink-0 py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B36A] ${
+                  isActive
+                    ? 'text-white underline underline-offset-8 decoration-[#D6B36A] decoration-2 font-semibold'
+                    : 'hover:text-white hover:underline underline-offset-8 decoration-[#D6B36A] decoration-2'
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
-        {/* Zone 3: 1 Primary Action Opening Official Google Form in New Tab (+ Mobile Hamburger) */}
+        {/* Zone 3: Primary Inquiry Action (New Tab) + Mobile/Tablet Hamburger */}
         <div className="flex items-center gap-3 shrink-0">
           <a
             href={SITE_INTEGRATIONS.officialGoogleFormUrl}
@@ -89,7 +158,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateSection }) => {
             aria-label={
               mobileOpen ? 'Close navigation menu' : 'Open navigation menu'
             }
-            className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-white/15 text-[#F7F8F5] hover:bg-white/10 transition-colors duration-150 cursor-pointer"
+            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-white/15 text-[#F7F8F5] hover:bg-white/10 transition-colors duration-150 cursor-pointer"
           >
             {mobileOpen ? (
               <X className="w-5 h-5" />
@@ -100,40 +169,81 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateSection }) => {
         </div>
       </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Responsive Mobile & Tablet Navigation Drawer */}
       {mobileOpen && (
         <div
           id="mobile-navigation-drawer"
-          className="md:hidden border-t border-white/10 bg-[#0D2130] px-5 py-5 shadow-2xl"
+          className="lg:hidden border-t border-white/10 bg-[#0D2130] px-5 py-5 shadow-2xl max-h-[84vh] overflow-y-auto"
         >
           <nav
             aria-label="Mobile navigation"
             className="flex flex-col space-y-1"
           >
+            {PRIMARY_NAV_ITEMS.map((item) => {
+              const isActive = Boolean(item.matchPages?.includes(activePage));
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => handleDestClick(e, item.dest)}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`py-2.5 px-2 text-sm border-b border-white/10 transition-colors flex items-center justify-between ${
+                    isActive
+                      ? 'font-semibold text-[#D6B36A]'
+                      : 'font-medium text-[#F7F8F5]/90 hover:text-[#D6B36A]'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#D6B36A]">
+                      Current
+                    </span>
+                  )}
+                </a>
+              );
+            })}
+
             <a
-              href="/#sounds-familiar"
-              onClick={(e) => handleLinkClick(e, 'sounds-familiar')}
-              className="py-3 px-2 text-base font-medium text-[#F7F8F5]/90 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
+              href="/#journey"
+              onClick={(e) =>
+                handleDestClick(e, { type: 'section', sectionId: 'journey' })
+              }
+              className="py-2.5 px-2 text-xs font-medium text-[#F7F8F5]/70 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
             >
-              Sounds Familiar?
+              Your Business Journey
             </a>
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.sectionId}
-                href={`/#${link.sectionId}`}
-                onClick={(e) => handleLinkClick(e, link.sectionId)}
-                className="py-3 px-2 text-base font-medium text-[#F7F8F5]/90 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            <a
+              href="/#quiz"
+              onClick={(e) =>
+                handleDestClick(e, { type: 'section', sectionId: 'quiz' })
+              }
+              className="py-2.5 px-2 text-xs font-medium text-[#F7F8F5]/70 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
+            >
+              Find Your Fit Guide
+            </a>
             <a
               href="/#faq"
-              onClick={(e) => handleLinkClick(e, 'faq')}
-              className="py-3 px-2 text-base font-medium text-[#F7F8F5]/90 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
+              onClick={(e) =>
+                handleDestClick(e, { type: 'section', sectionId: 'faq' })
+              }
+              className="py-2.5 px-2 text-xs font-medium text-[#F7F8F5]/70 hover:text-[#D6B36A] border-b border-white/10 transition-colors"
             >
               FAQ
             </a>
+            <a
+              href="/privacy-notice"
+              onClick={(e) =>
+                handleDestClick(e, { type: 'page', page: 'privacy-notice' })
+              }
+              className={`py-2.5 px-2 text-xs font-medium border-b border-white/10 transition-colors ${
+                activePage === 'privacy-notice'
+                  ? 'text-[#D6B36A] font-semibold'
+                  : 'text-[#F7F8F5]/75 hover:text-[#D6B36A]'
+              }`}
+            >
+              Privacy Notice
+            </a>
+
             <div className="pt-4">
               <a
                 href={SITE_INTEGRATIONS.officialGoogleFormUrl}

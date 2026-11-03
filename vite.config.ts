@@ -19,7 +19,12 @@ export default defineConfig(() => {
       rollupOptions: {
         input: {
           main: path.resolve(rootDir, 'index.html'),
-          privacyNotice: path.resolve(rootDir, 'privacy-notice/index.html'),
+          services: path.resolve(rootDir, 'services.html'),
+          insights: path.resolve(rootDir, 'insights.html'),
+          taxResources: path.resolve(rootDir, 'tax-resources.html'),
+          regulatoryUpdates: path.resolve(rootDir, 'regulatory-updates.html'),
+          about: path.resolve(rootDir, 'about.html'),
+          privacyNotice: path.resolve(rootDir, 'privacy-notice.html'),
         },
       },
     },
